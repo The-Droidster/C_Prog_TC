@@ -30,3 +30,16 @@
 
 # Debug files
 *.dSYM/
+
+# Other Files
+*.BAK
+*.CFG
+*.COM
+*.TCH
+*.DSK
+*.DPR
+*.OVL
+*.MAK
+*.SWP
+*.TC
+*.PIF
