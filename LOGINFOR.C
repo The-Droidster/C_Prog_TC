@@ -23,7 +23,7 @@ void main()
 		loginch = login(user,pass);
 		if(loginch == 1)
 		{
-			printf("\nlogin successful! You got it bitch ;-P! Thank You for using the system!");
+			printf("\n===>login successful! You got it bitch ;-P! Thank You for using the system!");
 			break;
 		}
 		else
