@@ -1,108 +1,164 @@
-
-
 #include <stdio.h>
 #include <conio.h>
-#include <unistd.h>
 
-int total(int,int,int,int,int);
-int avrg(int);
-float prcnt(int);
-void grade(float,char[]);
+int login(char[], char[]);
+int booking(int, int);
+int bookmenu(int, int, int);
+int logincheck(int);
+void createuser();
 
-int main()
+int main(void)
 {
-	
-	int eng,mat,c,jav,db,tot,avg,rno;
-	float per;
-	char name[100];
-	system("cls");
-	printf("\n\nWelcome to student marksheet generation module!");
-	printf("\n===============================================\n\n");
-	printf("Enter your name: ");
-	fgets(name,100,stdin);
-	strtok(name,"\n");
-	printf("\nEnter your roll number: ");
-	scanf("%d",&rno);
-	printf("\n\nHello, %s Please enter your subjectwise marks out of 100: \n",name);
-	printf("\nEnglish: ");
-	scanf("%d",&eng);
-	printf("\nMath: ");
-	scanf("%d",&mat);
-	printf("\nC Prog: ");
-	scanf("%d",&c);
-	printf("\nJava Prog: ");
-	scanf("%d",&jav);
-	printf("\nDatabase: ");
-	scanf("%d",&db);
-	if(eng > 100 || mat > 100 || c > 100 || jav > 100 || db > 100)
-	{
-		printf("\n\nInvalid marks entered. Must be out of 100.");
-	}
-	else
-	{
-		system("cls");
-		printf("\n\n\nGenerating Your Marksheet...");
-		printf("\n============================");
-		sleep(2);
-       // freopen("marksheet.txt","w",stdout);
-		printf("\n\nStudent Details:");
-		printf("\n----------------");
-		printf("\n\nStudent Name: %s\nStudent Roll No.: %d",name,rno);
-		printf("\n========================================\n");
-		printf("\nYour Subjectwise Marks:");
-		printf("\n-----------------------\n\n");
-		printf("English\tMaths\tC-Prog\tJava\tDatabase");
-		printf("\n\n%d/100\t%d/100\t%d/100\t%d/100\t%d/100",eng,mat,c,jav,db);
-		printf("\n========================================\n");
-		tot = total(eng,mat,c,jav,db);
-		printf("\n========================================");
-		printf("\nTotal Marks = %d/500",tot);
-		printf("\n========================================");
-		avg = avrg(tot);
-		printf("\nAverage Marks = %d/100",avg);
-		printf("\n========================================");
-		per = prcnt(tot);
-		printf("\nPercentage: %.2f %%",per);
-		printf("\n========================================\n");
-		printf("\nGrade: ");
-		grade(per,name);
-		
-	}
-	getche();
-	return 0;
+    char user[10], pass[10];
+    int logres, seats, bookres, bookch, loginch, usercheck;
+    int maxseats = 20;
+    system("cls");
+    printf("\nWelcome to Railway booking system!\n");
+    printf("1. Press 1 to Login if you have already signed up.\n");
+    printf("2. Press 2 to Sign Up.\n\n");
+    printf("Your Choice?: ");
+    scanf("%d", &loginch);
+    usercheck = logincheck(loginch);
+    if(usercheck == 1)
+    {
+    A:
+        printf("\nUser Login:\nPlease enter your username and password:\n");
+        printf("Username: ");
+        scanf("%s", user);
+        printf("Password: ");
+        scanf("%s", pass);
+        logres = login(user, pass);
+        if(logres == 1)
+        {
+            printf("Login successful!\n\nPlease proceed for booking!\n20 Seats available!");
+            printf("\nPlease enter number of seats: ");
+            scanf("%d", &seats);
+            bookres = booking(seats, maxseats);
+            if(bookres == 1)
+            {
+                printf("\nEnough seats available! Proceed for booking.\n\n");
+                printf("Please select your class:\n");
+                printf("1.Enter 1 for AC 1 Tier.\n");
+                printf("2.Enter 2 for AC 2 Tier.\n");
+                printf("3.Enter 3 for AC 3 Tier.\n");
+                printf("4.Enter 4 for Sleeper.\n");
+                printf("\nYour choice?: ");
+                scanf("%d", &bookch);
+                maxseats = bookmenu(bookch, seats, maxseats);
+            }
+            else
+            {
+                printf("Not enough seats!");
+            }
+        }
+        else
+        {
+            printf("Invalid username or password!");
+        }
+    }
+    else if(usercheck == 2)
+    {
+        createuser();
+        system("cls");
+        goto A;
+    }
+    printf("\n\nThank You for using the Railway booking system. Press any key to exit!");
+    getche();
+    return 0;
 }
 
-int total(int eng, int mat, int c, int jav, int db)
+int login(char username[], char password[])
 {
-	return (eng + mat + c + jav + db);
+    if(!(strcmp(username, "Saurabh")) && !(strcmp(password, "Sau123")))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
-int avrg(int tot)
+int booking(int seats, int maxseats)
 {
-	return (tot/5);
+    if(seats <= maxseats)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
-float prcnt(int tot)
+int bookmenu(int choice, int seats, int maxseats)
 {
-	return (((float)tot/500)*100);
+    switch(choice)
+    {
+    case 1:
+    {
+        printf("\n%d Seats booked in AC 1 Tier.", seats);
+        maxseats = maxseats - seats;
+        printf("\n%d seats remaining!", maxseats);
+        break;
+    }
+    case 2:
+    {
+        printf("\n%d Seats booked in AC 2 Tier.", seats);
+        maxseats = maxseats - seats;
+        printf("\n%d seats remaining!", maxseats);
+        break;
+    }
+    case 3:
+    {
+        printf("\n%d Seats booked in AC 3 Tier.", seats);
+        maxseats = maxseats - seats;
+        printf("\n%d seats remaining!", maxseats);
+        break;
+    }
+
+    case 4:
+    {
+        printf("\n%d Seats booked in Sleeper coach!", seats);
+        maxseats = maxseats - seats;
+        printf("\n%d seats remaining!", maxseats);
+        break;
+    }
+
+    default:
+        printf("\nInvalid class!");
+    }
+    return maxseats;
 }
 
-void grade(float per, char name[])
+int logincheck(loginchoice)
 {
-	if(per <= 100.00 && per >= 75.00)
-	{
-		printf("Congratulations '%s' you have passed with 'Distinction'!",name);
-	}
-	else if(per < 75.00 && per >= 60.00)
-	{
-		printf("Congratulations '%s' you have passed with 'First Class'!",name);
-	}
-	else if(per < 60.00 && per >= 35.00)
-	{
-		printf("Congratulations '%s' you have passed with Pss Class!",name);
-	}
-	else
-	{
-		printf("You have failed '%s'! Don't lose heart!",name);
-	}
+    switch(loginchoice)
+    {
+    case 1:
+        return 1;
+
+    case 2:
+        return 2;
+
+    default:
+        printf("\nInvalid choice!");
+        return 0;
+    }
+}
+
+void createuser()
+{
+    char usern[10], passwd[10], name[100];
+    printf("\nWelcome to new user creation module!\n\n");
+    printf("Please enter your name: ");
+    fflush(stdin);
+    fgets(name, 100, stdin);
+    strtok(name, "\n");
+    printf("Please enter your desired username: ");
+    scanf("%s", usern);
+    printf("Please enter a password: ");
+    scanf("%s", passwd);
+    printf("New user '%s' successfully created! \n\nPress any key to proceed to login.\n", name);
+    getch();
 }
